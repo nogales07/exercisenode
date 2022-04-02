@@ -60,4 +60,3 @@ function removeEmpty(obj) {
     .reduce((acc,[k,v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }), {})
 }
 
-app.listen(3000)
