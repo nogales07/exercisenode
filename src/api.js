@@ -32,7 +32,7 @@ router.post('/image/transform', async (req, res) => {
   }
 })
 
-router.post('/object/clean', async (req, res) => {
+router.post('/object/clean',(req, res) => {
   try {
       
     const obj = req.body
