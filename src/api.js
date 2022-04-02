@@ -13,9 +13,6 @@ const users = [
       "password": "123456"
   }
 ]
-router.get('/users', (req, res) => {
-  res.json(users)
-})
 
 router.post('/image/transform', async (req, res) => {
   const user = users.find(user => user.name === req.body.user)
