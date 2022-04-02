@@ -4,21 +4,18 @@ const serverless = require("serverless-http");
 const app = express();
 const router = express.Router();
 
-const bcrypt = require('bcrypt')
 
 app.use(express.json())
 
 const users = [
-    {
-        "name": "test",
-        "password": "$2b$10$7v4O6kBxFkXCTVBkptTV6O/LVyaYCXNRSBkN7T2rFjRCp7xKfUEKa"
-    }
+  {
+      "name": "test",
+      "password": "123456"
+  }
 ]
-
 router.get('/users', (req, res) => {
   res.json(users)
 })
-
 
 router.post('/image/transform', async (req, res) => {
   const user = users.find(user => user.name === req.body.user)
@@ -26,7 +23,7 @@ router.post('/image/transform', async (req, res) => {
     return res.status(401).send()
   }
   try {
-    if(await bcrypt.compare(req.body.password, user.password)) {
+    if(await req.body.password === user.password) {
         let buff = new Buffer(req.body.link);
         let base64data = buff.toString('base64');
        res.status(201).json({'base64': base64data})
@@ -37,7 +34,6 @@ router.post('/image/transform', async (req, res) => {
     res.status(500).send(e)
   }
 })
-
 
 router.post('/object/clean', async (req, res) => {
   try {
@@ -59,9 +55,9 @@ router.post('/object/clean', async (req, res) => {
 })
 
 function removeEmpty(obj) {
-    return Object.entries(obj)
-    .filter(([_, v]) => v != null)
-    .reduce((acc,[k,v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }), {})
+  return Object.entries(obj)
+  .filter(([_, v]) => v != null)
+  .reduce((acc,[k,v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }), {})
 }
 
 
